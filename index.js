@@ -1,10 +1,4 @@
-class Console {
-				constructor() {
-					this.isOpen = false;
-					this.consoleMessages = [];
-
-					// Styles
-					this.styles = $(`
+class Console{constructor(){this.isOpen=!1,this.consoleMessages=[],this.styles=$(`
       <style>
         .console-container {
           position: fixed;
@@ -64,10 +58,7 @@ class Console {
           color: #00ccff;
         }
       </style>
-    `);
-
-					// Console
-					this.consoleElement = $(`
+    `),this.consoleElement=$(`
       <div class="console-container closed">
         <div class="console-header">
           <span>Console</span>
@@ -78,103 +69,4 @@ class Console {
           
         </div>
       </div>
-    `);
-
-					// Append to body
-					$('body').append(this.styles);
-					$('body').append(this.consoleElement);
-
-					// Event listeners
-					this.consoleElement.find('.console-header').on('click', () => {
-						this.toggleConsole();
-					});
-					this.consoleElement.find('.console-input').on('keypress', (e) => {
-						if (e.which === 13) {
-							this.executeCommand();
-						}
-					});
-
-					// Redefine console methods
-					this.redefineConsoleMethods();
-				}
-
-				toggleConsole() {
-					this.isOpen = !this.isOpen;
-					this.consoleElement.toggleClass('closed', !this.isOpen);
-					this.consoleElement.toggleClass('open', this.isOpen);
-				}
-
-				executeCommand() {
-					const input = this.consoleElement.find('.console-input').val();
-					this.consoleElement.find('.console-input').val('');
-					this.log(`> ${input}`);
-
-					try {
-						const result = eval(input);
-						this.log(result);
-					} catch (e) {
-						this.error(`Error: ${e.message}`);
-					}
-				}
-
-				redefineConsoleMethods() {
-					const that = this;
-
-					console.log = function(...args) {
-						that.log(...args);
-					};
-
-					console.warn = function(...args) {
-						that.warn(...args);
-					};
-
-					console.error = function(...args) {
-						that.error(...args);
-					};
-
-					console.debug = function(...args) {
-						that.debug(...args);
-					};
-				}
-
-				log(...args) {
-					this.addMessage('log', ...args);
-				}
-
-				warn(...args) {
-					this.addMessage('warn', ...args);
-				}
-
-				error(...args) {
-					this.addMessage('error', ...args);
-				}
-
-				debug(...args) {
-					this.addMessage('debug', ...args);
-				}
-
-				addMessage(type, ...args) {
-					const message = this.formatMessage(type, ...args);
-					this.consoleMessages.push(message);
-					this.updateConsoleContent();
-				}
-
-				formatMessage(type, ...args) {
-					const formattedArgs = args.map((arg) => {
-						if (typeof arg === 'object') {
-							return JSON.stringify(arg);
-						} else {
-							return arg;
-						}
-					}).join(' ');
-
-					return `<div class="console-message ${type}">${type.toUpperCase()}: ${formattedArgs}</div>`;
-				}
-
-				updateConsoleContent() {
-					this.consoleElement.find('.console-content').html("<br>"+this.consoleMessages.join(''));
-				}
-			}
-
-			// Usage
-			const myConsole = new Console();
+    `),$("body").append(this.styles),$("body").append(this.consoleElement),this.consoleElement.find(".console-header").on("click",()=>{this.toggleConsole()}),this.consoleElement.find(".console-input").on("keypress",e=>{13===e.which&&this.executeCommand()}),this.redefineConsoleMethods()}toggleConsole(){this.isOpen=!this.isOpen,this.consoleElement.toggleClass("closed",!this.isOpen),this.consoleElement.toggleClass("open",this.isOpen)}executeCommand(){let input=this.consoleElement.find(".console-input").val();this.consoleElement.find(".console-input").val(""),this.log(`> ${input}`);try{let result=eval(input);this.log(result)}catch(e){this.error(`Error: ${e.message}`)}}redefineConsoleMethods(){let e=this;console.log=function(...o){e.log(...o)},console.warn=function(...o){e.warn(...o)},console.error=function(...o){e.error(...o)},console.debug=function(...o){e.debug(...o)}}log(...e){this.addMessage("log",...e)}warn(...e){this.addMessage("warn",...e)}error(...e){this.addMessage("error",...e)}debug(...e){this.addMessage("debug",...e)}addMessage(e,...o){let s=this.formatMessage(e,...o);this.consoleMessages.push(s),this.updateConsoleContent()}formatMessage(e,...o){let s=o.map(e=>"object"==typeof e?JSON.stringify(e):e).join(" ");return`<div class="console-message ${e}">${e.toUpperCase()}: ${s}</div>`}updateConsoleContent(){this.consoleElement.find(".console-content").html("<br>"+this.consoleMessages.join(""))}}const myConsole=new Console;
